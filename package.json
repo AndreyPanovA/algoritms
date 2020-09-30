@@ -1,0 +1,25 @@
+{
+  "name": "algoritms",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AndreyPanovA/algoritms.git"
+  },
+  "keywords": [
+    "algoritms"
+  ],
+  "author": "andrey panov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AndreyPanovA/algoritms/issues"
+  },
+  "homepage": "https://github.com/AndreyPanovA/algoritms#readme",
+  "dependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
