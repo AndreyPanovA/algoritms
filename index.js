@@ -1,7 +1,6 @@
 let value = [];
 function fib(n, stack = []) {
   if (stack[n] !== undefined) {
-    // console.log(stack);
     return stack[n];
   }
   if (n === 0 || n === 1) {
