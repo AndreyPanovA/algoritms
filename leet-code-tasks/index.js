@@ -170,3 +170,223 @@ const reverseWords = function(s) {
     }
     return res.join(' ');
 };
+
+//TODO Префиксные суммы - cупер крутая задача - повторить технику
+// https://leetcode.com/problems/product-of-array-except-self/submissions/1648866565/?envType=study-plan-v2&envId=leetcode-75
+    /**
+     * @param {number[]} nums
+     * @return {number[]}
+     */
+    const prefix = nums => {
+        let [p, s] = [[1], [1]];
+        for (let i = 0; i < nums.length; i++) {
+            p.push(p[i] * nums[i]);
+            s.unshift(s[0] * nums[nums.length - i - 1]);
+        }
+        return [p, s];
+    };
+
+var productExceptSelf = function(nums) {
+    const [p, s] = prefix(nums);
+    return nums.map((el, idx) => p[idx] * s[idx + 1]);
+};
+
+
+var productExceptSelf1 = function(nums) {
+    let answers = [];
+
+    let leftProduct = 1;
+    for (let i = 0; i < nums.length; i++) {
+        answers[i] = leftProduct;
+        leftProduct *= nums[i];
+    }
+    console.log(answers, leftProduct);
+
+    let rightProduct = 1;
+    for (let i = nums.length - 1; i > -1; i--) {
+        console.log('s', answers[i], rightProduct);
+        answers[i] *= rightProduct;
+
+        rightProduct *= nums[i];
+    }
+    // console.log(answers)
+
+    return answers;
+};
+
+
+
+//
+
+/**
+ * @param {number[]} nums
+ * @return {boolean}
+ */
+var increasingTriplet = function(nums) {
+    let mid = nums.length - 2
+    while(mid>=1 && mid<nums.length) {
+        for (let i = mid + 1; i<nums.length;i++) {
+            if(nums[i]>nums[mid]) {
+                for (let j = mid - 1; j>=0;j--) {
+                    if(nums[j]<nums[mid]) {
+                        return true
+                    }
+                }
+            }else {
+                mid--
+            }
+        }
+    }
+    return false
+};
+
+//TODO еще раз - важно (закосячил)
+// https://leetcode.com/problems/increasing-triplet-subsequence/?envType=study-plan-v2&envId=leetcode-75
+var increasingTriplet = function(nums) {
+    let first = Infinity;
+    let second = Infinity;
+
+    for (let num of nums) {
+        if (num <= first) {
+            first = num;           // обновляем минимальный элемент
+        } else if (num <= second) {
+            second = num;          // обновляем второй минимальный элемент, больше первого
+        } else {
+            return true;           // нашли третий элемент, больше первого и второго
+        }
+    }
+
+    return false;
+};
+
+
+//TODO Норм задача, когда то видел ее на собесе - можно повторить
+//https://leetcode.com/problems/string-compression/?envType=study-plan-v2&envId=leetcode-75
+/**
+ * @param {character[]} chars
+ * @return {number}
+ */
+
+
+var compress = function(chars) {
+    let count = 1,
+        res = [];
+
+    for (let i in chars) {
+        let l = chars[i];
+        let prev = chars[+i - 1];
+        let next = chars[+i + 1];
+        if (l !== prev && prev) {
+            res.push(prev);
+            if (count > 1 && res.push(...`${count}`.split(""))) count = 1;
+        }
+        if (l == prev) {
+            count++;
+        }
+        if (next == undefined) {
+            res.push(l);
+            if (count > 1 && res.push(...`${count}`.split(""))) count = 1;
+        }
+    }
+    chars.length = 0
+    chars.push(...res.map(String))
+    res.length = 0
+
+    return chars.length
+};
+//TODO хорошая задачи на понимание сортирвки слиянием
+// https://leetcode.com/problems/median-of-two-sorted-arrays/?envType=problem-list-v2&envId=divide-and-conquer
+/**
+ * @param {number[]} nums1
+ * @param {number[]} nums2
+ * @return {number}
+ */
+var findMedianSortedArrays = function(nums1, nums2) {
+    const merge = nums1.concat(nums2).sort((a,b)=>a-b);
+    const length = merge.length;
+    let median = 0
+    if(length%2===0)
+    {
+        median = ((merge[(length/2)-1] + merge[((length/2)+1)-1])/2);
+    }
+    else{
+        median = merge[((length+1)/2)-1];
+    }
+    return median
+};
+
+
+//TODO нужно попытаться решить shift или подобных методов ( повторить )
+//https://leetcode.com/problems/move-zeroes/?envType=study-plan-v2&envId=leetcode-75
+
+/**
+ * @param {number[]} nums
+ * @return {void} Do not return anything, modify nums in-place instead.
+ */
+var moveZeroes = function(nums) {
+    let count = 0;
+    let length = nums.length;
+    for (let i = 0; i < length; i++) {
+        const n = nums.shift();
+
+        if (n === 0) {
+            count++;
+            continue;
+        }
+        nums.push(n);
+    }
+    nums.push(...Array(count).fill(0));
+    return nums;
+};
+
+var moveZeroes = function(nums) {
+    const l = nums.length;
+    for (let i = 0; i < l; i++) {
+        if (nums[i] == 0) continue;
+        nums.push(nums[i]);
+    }
+    nums.splice(0, l);
+    nums.push(...Array(l - nums.length).fill(0));
+    return nums;
+};
+
+
+//TODO - тут техника двух указателей - запомнить ( это не я написал )
+var moveZeroes = function(nums) {
+    let lastNonZeroFoundAt = 0; // первый указатель
+    for (let i = 0; i < nums.length; i++) { // второй указатель
+        if (nums[i] !== 0) {
+            nums[lastNonZeroFoundAt] = nums[i];
+            lastNonZeroFoundAt++;
+        }
+    }
+    for (let i = lastNonZeroFoundAt; i < nums.length; i++) {
+        nums[i] = 0;
+    }
+};
+
+//Легкое решил + python
+// https://leetcode.com/problems/is-subsequence/?envType=study-plan-v2&envId=leetcode-75
+/**
+ * @param {string} s
+ * @param {string} t
+ * @return {boolean}
+ */
+var isSubsequence = function(s, t) {
+    let idx = 0, i = 0
+    while(idx<s.length && i <t.length) {
+        if(s[idx]==t[i])  idx++
+        if(idx == s.length) return true
+        i++
+    }
+    return s.length == 0
+};
+
+//TODO очень крутая задача обязательно повторить на два указателя
+// https://leetcode.com/problems/container-with-most-water/description/?envType=study-plan-v2&envId=leetcode-75
+
+
+
+
+
+

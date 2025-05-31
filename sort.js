@@ -63,6 +63,7 @@ const quickSort = arr => {
   const arr = Array(100)
     .fill('')
     .map(el => Math.round(Math.random() * 100));
+
   console.log(quickSort(arr));
   console.log(mergeSort(arr));
   console.log(heapSort(arr));
