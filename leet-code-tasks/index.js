@@ -385,8 +385,106 @@ var isSubsequence = function(s, t) {
 //TODO очень крутая задача обязательно повторить на два указателя
 // https://leetcode.com/problems/container-with-most-water/description/?envType=study-plan-v2&envId=leetcode-75
 
+//TODO супер крутая задача из Google и Яндекс
+// Найти максимальную подстроку без повторяющихся символов
+// https://leetcode.com/problems/longest-substring-without-repeating-characters/description/
+const clearHash = (hash, idx) => {
+    Object.keys(hash).forEach(el => {
+        if (hash[el] <= idx) {
+            delete hash[el];
+        }
+    });
+    return hash;
+};
+const lengthOfLongestSubstring = s => {
+    const hash = {};
+    let maxSubStr = '';
+    let removeStak = [];
+    let left = 0,
+        right = 0;
+
+    while (left < s.length && right < s.length) {
+        const l = s[right];
+        if (l in hash) {
+            const idx = hash[l];
+            let word = s.slice(left, right);
+            if (word.length > maxSubStr.length) {
+                maxSubStr = word;
+            }
+            clearHash(hash, idx);
+            left = idx + 1;
+            // right = left;
+            continue;
+        }
+        hash[l] = right;
+        right++;
+    }
+    let word = s.slice(left, right);
+    if (word.length > maxSubStr.length) {
+        maxSubStr = word;
+    }
+    return maxSubStr.length;
+};
 
 
+//TODO повторить на темук скользящее окно
+// https://leetcode.com/problems/maximum-average-subarray-i/submissions/1651485908/?envType=study-plan-v2&envId=leetcode-75
 
+/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number}
+ */
+var findMaxAverage = function(nums, k) {
+    const db = [];
+    let sum = 0;
+    let left = 0;
+    let maxSum = -Infinity;
 
+    for (let right = 0; right < nums.length; right++) {
+        const el = nums[right];
+        db.push(el);
+        sum += el;
+        if (right - left + 1 == k) {
+            maxSum = Math.max(sum, maxSum); // до сдвига обязательно
+            left++;
+            const sub = db.shift() ?? 0;
+            sum -= sub;
+        }
+    }
+    return maxSum / k;
+};
+//TODO повторить на скользящее окно , в следующий раз сделать через while
+// https://leetcode.com/problems/maximum-number-of-vowels-in-a-substring-of-given-length/?envType=study-plan-v2&envId=leetcode-75
+
+/**
+ * @param {string} s
+ * @param {number} k
+ * @return {number}
+ */
+const isVowel = (l) => Boolean(l.match(/[aeiou]/i));
+
+var maxVowels = function(s, k) {
+    const db = []
+    let left = 0
+    let maxSum = -Infinity
+    let sum = 0
+
+    for (let right = 0;right<s.length;right++) {
+        const l = s[right]
+        db.push(l)
+        if(isVowel(l)) {
+            sum++
+        }
+        if(right-left+1==k) {
+            maxSum = Math.max(sum, maxSum)
+            const sub = db.shift()
+            if (isVowel(sub)) {
+                sum--;
+            }
+            left++
+        }
+    }
+    return maxSum
+};
 
