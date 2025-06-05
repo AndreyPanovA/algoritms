@@ -597,3 +597,15 @@ var findDifference = function(nums1, nums2) {
     }
     return [Object.values(h1), Object.values(h2)]
 };
+//Легкая задача
+//https://leetcode.com/problems/unique-number-of-occurrences/?envType=study-plan-v2&envId=leetcode-75
+/**
+ * @param {number[]} arr
+ * @return {boolean}
+ */
+var uniqueOccurrences = function(arr) {
+    const hash = {}
+    for (let el of arr) hash[el]=(hash?.[el] ?? 0) + 1
+    const values = Object.values(hash)
+    return values.length == new Set(values).size
+};
