@@ -487,4 +487,113 @@ var maxVowels = function(s, k) {
     }
     return maxSum
 };
+//TODO CRITICAL очень важно повторить
+// https://leetcode.com/problems/max-consecutive-ones-iii/?envType=study-plan-v2&envId=leetcode-75
+/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number}
+ */
+var longestOnes = function(nums, k) {
+    let left =0, maxFlips = k, max = 0, totalMax = 0
+    for (let right = 0;right<nums.length;right++) {
+        if(nums[right]==1) {
+            max++
+        }
+        if(nums[right]==0 && maxFlips==0) {
+            totalMax = Math.max(max, totalMax)
+            while(maxFlips==0 && left<nums.length) {
+                let el = nums[left]
+                if(el==0) {
+                    maxFlips++
+                }
+                max--
+                left++
+            }
 
+        }
+        if(nums[right]==0 && maxFlips>0) {
+            maxFlips--
+            max++
+        }
+    }
+    return Math.max(max, totalMax)
+};
+//TODO снова скользящее окно и обязательно повторить
+//https://leetcode.com/problems/longest-subarray-of-1s-after-deleting-one-element/description/?envType=study-plan-v2&envId=leetcode-75
+
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var longestSubarray = function(nums) {
+    let delElem = 1, left = 0, max = 0;
+
+    for (let right=0; right<nums.length; right++) {
+
+        if (nums[right] === 0)  delElem--;
+
+        while (delElem<0) {
+            if (nums[left] === 0) delElem++;
+            left++;
+        }
+
+        max = Math.max(right - left + 1, max)
+    }
+
+    return max -1; // nums = [1, 1, 0, 1, 1]; 5 длина всего => max-1
+};
+
+//Very Easy
+//https://leetcode.com/problems/find-the-highest-altitude/?envType=study-plan-v2&envId=leetcode-75
+
+/**
+ * @param {number[]} gain
+ * @return {number}
+ */
+var largestAltitude = function(gain) {
+    let height = 0, totalHeight = 0;
+    for (let i=0; i<gain.length; i++) {
+        const h = gain[i]
+        height +=h
+        totalHeight = Math.max(height, totalHeight)
+    }
+    return totalHeight
+};
+
+//TODO - просто прочитай код повторение префиксной суммы ( можно префиксную сумму и через push делать с dp.push(dp[arr.length -1] + gain[i])
+const prefixSum = gain => {
+    let dp = Array(gain.length).fill(0);
+    dp[0] = gain[0];
+    for (let i = 1; i < dp.length; i++) {
+        dp[i] = gain[i] + dp[i - 1];
+    }
+    return dp;
+};
+var largestAltitude = function(gain) {
+    return Math.max(...prefixSum([0, ...gain]))
+};
+
+
+//TODO жесткая задача хотя с тегом easy - обязательно повторить
+//https://leetcode.com/problems/find-the-difference-of-two-arrays/?source=submission-ac
+
+//Легкая задача  - интересное решение с set и defferance
+//https://leetcode.com/problems/find-the-difference-of-two-arrays/?source=submission-ac
+/**
+ * @param {number[]} nums1
+ * @param {number[]} nums2
+ * @return {number[][]}
+ */
+var findDifference = function(nums1, nums2) {
+    const h1 = {}, h2 ={}
+    for (let i=0;i<Math.max(nums1.length, nums2.length);i++) {
+        if(nums1[i]!==undefined) h1[nums1[i]] = nums1[i]
+        if(nums2[i]!==undefined) h2[nums2[i]] = nums2[i]
+    }
+    for (let i=0;i<Math.max(nums1.length, nums2.length);i++) {
+        if(nums1[i]!==undefined && nums1[i] in h2) delete h2[nums1[i]]
+        if(nums2[i]!==undefined && nums2[i] in h1) delete h1[nums2[i]]
+    }
+    return [Object.values(h1), Object.values(h2)]
+};
