@@ -609,3 +609,61 @@ var uniqueOccurrences = function(arr) {
     const values = Object.values(hash)
     return values.length == new Set(values).size
 };
+
+//TODO - повторить - полезная задача
+//https://leetcode.com/problems/equal-row-and-column-pairs/?envType=study-plan-v2&envId=leetcode-75
+/**
+ * @param {number[][]} grid
+ * @return {number}
+ */
+
+const transpondMatrix = matrix => {
+    const res = [...Array.from({ length: matrix[0].length }).map(() => [])];
+
+    for (let i in matrix) {
+        const m = matrix[i];
+
+        for (let j in m) res[j].push(m[j]);
+    }
+    return res;
+};
+var equalPairs = function(grid) {
+    const tMatrix = transpondMatrix(grid);
+    let max = 0;
+    const hash = {};
+    for (let row in tMatrix) {
+        const t1 = JSON.stringify(tMatrix[row]);
+        hash[t1] = (hash?.[t1] ?? 0) + 1;
+    }
+    for (let row in grid) {
+        const t1 = JSON.stringify(grid[row]);
+        if (hash[t1]) {
+            max += hash[t1];
+        }
+    }
+    return max;
+};
+
+//TODO Решить обязательно еще раз сам решил но решение много жрало по памяти решал на питоне
+// https://leetcode.com/problems/removing-stars-from-a-string/?envType=study-plan-v2&envId=leetcode-75//Easy 
+class RecentCounter:
+
+    def __init__(self):
+        self.pings= []
+
+    def ping(self, t: int) -> int:
+        self.pings.append(t)
+        count=0
+        for i in (range(len(self.pings)-1,-1,-1)):
+            if(self.pings[i]>=t-3000):
+                count+=1
+            else:
+                break
+        return count
+
+        
+
+
+# Your RecentCounter object will be instantiated and called as such:
+# obj = RecentCounter()
+# param_1 = obj.ping(t)
