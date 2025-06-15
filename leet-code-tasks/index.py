@@ -333,7 +333,78 @@ class Solution:
         return dfs(root1) == dfs(root2)
 
 
+# TODO - точно повторить  - выделено в топ ( интересное решение с префиксной суммой)
+# https://leetcode.com/problems/path-sum-iii/?envType=study-plan-v2&envId=leetcode-75
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def pathSum(self, root: Optional[TreeNode], targetSum: int) -> int:
+        if not root:
+            return 0
+
+        def dfs(root, s):
+            if not root:
+                return 0
+            s = s + root.val
+
+            count = 1 if s == targetSum else 0
+
+            count += dfs(root.left, s)
+            count += dfs(root.right, s)
+            return count
 
 
+        return dfs(root, 0) + self.pathSum(root.left, targetSum) + self.pathSum(root.right, targetSum)
+
+
+
+
+# TODO данная задача очень кайфная и простая но начти думать что рекурсия идет снизу значит что размышления должны быть такими: первое значение для тебя это выход из рекурсии и далее идешь итеративно будто цикл назад, но при этом помнишь, что рекурсия задается сверху => код идет вниз а размышления идут вверх. Итого: чтобы придумать шаг рекурсии нужно взять первым элементом последний
+#https://leetcode.com/problems/search-in-a-binary-search-tree/description/?envType=study-plan-v2&envId=leetcode-75
+
+
+
+
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    # def searchBST(self, root: Optional[TreeNode], val: int) -> Optional[TreeNode]:
+    #     if not root:
+    #         return 
+    #     def dfs(root, deepRoot):
+    #         if root is None:
+    #             return deepRoot
+    #         if root.val ==val:
+    #             return root
+    #         r1 = dfs(root.left, deepRoot)
+    #         r2 = dfs(root.right, deepRoot)
+    #         if r1:
+    #             return r1
+    #         else:
+    #             return r2
+
+    #     return dfs(root, None)
+    def searchBST(self, root: Optional[TreeNode], val: int) -> Optional[TreeNode]:
+        stack = [root]
+        
+        while len(stack) > 0:
+            node = stack.pop()
+            if node.left:
+                stack.append(node.left)
+            if node.right:
+                stack.append(node.right)
+            if node.val == val:
+                return node
+        return None
 
 
